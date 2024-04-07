@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { storeData, getData } from '../services/LocalStorageService'; // 更新路径以匹配你的文件结构
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { storeData, getData } from '../services/LocalStorageService';
 import * as Location from 'expo-location';
-import DataService from '../services/DataService'; // 确保路径正确
+import DataService from '../services/DataService';
 
 const LocationScreen = () => {
   const [location, setLocation] = useState(null);
+  const mapRef = useRef(null);
 
-  // 请求位置权限并获取位置
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -17,22 +18,24 @@ const LocationScreen = () => {
 
     let currentLocation = await Location.getCurrentPositionAsync({});
     setLocation(currentLocation.coords);
-    // 存储位置数据到本地
+
+    // 当位置更新时，使用animateToRegion让地图视图居中到新位置
+    mapRef.current?.animateToRegion({
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }, 1000); // 1000是动画持续时间（毫秒）
+
     await storeData('lastLocation', currentLocation.coords);
   };
 
-  // 发送位置数据到服务器
   const handleSendLocation = async () => {
     if (location) {
-      await DataService.sendLocationViaHttp({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      });
-      // 如果DataService需要传递其他参数（比如用户ID等），请相应调整
+      await DataService.sendLocationViaHttp(location);
     }
   };
 
-  // 读取位置数据
   useEffect(() => {
     const fetchLocation = async () => {
       const savedLocation = await getData('lastLocation');
@@ -46,6 +49,23 @@ const LocationScreen = () => {
 
   return (
     <View style={styles.container}>
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        initialRegion={{
+          latitude: 37.78825, // 默认值，第一次渲染地图时使用
+          longitude: -122.4324, // 默认值
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {location && (
+          <Marker
+            coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+            title="Your Location"
+          />
+        )}
+      </MapView>
       <Text style={styles.text}>
         {location ? `Latitude: ${location.latitude}, Longitude: ${location.longitude}` : 'No location data.'}
       </Text>
@@ -60,10 +80,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+  },
+  map: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height / 3,
   },
   text: {
-    marginBottom: 20,
+    marginVertical: 20,
     textAlign: 'center',
   },
 });
