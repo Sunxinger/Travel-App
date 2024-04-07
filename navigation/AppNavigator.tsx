@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // 导入屏幕组件
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import LocationScreen from '../screens/LocationScreen'; // 根据你的文件结构更新路径
+
 
 // 使用createBottomTabNavigator创建一个Tab导航器
 const Tab = createBottomTabNavigator();
@@ -17,6 +19,7 @@ const AppNavigator = () => {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Location" component={LocationScreen} />
     </Tab.Navigator>
   );
 };
