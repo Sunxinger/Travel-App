@@ -4,18 +4,44 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import UserScreen from './screens/UserScreen';
+import EditProfileScreen from './screens/EditProfileScreen';
 import LocationScreen from './screens/LocationScreen';
 import LocationHistoryScreen from './screens/LocationHistoryScreen';
-import CreateLogScreen from './screens/CreateLogScreen'; // 确保你已创建此屏幕
+import CreateLogScreen from './screens/CreateLogScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+function UserStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="UserMain"
+        component={UserScreen}
+        options={{ title: 'User' }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{ title: 'Edit Profile' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function LocationStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="LocationMain" component={LocationScreen} options={{ title: 'Location' }} />
-      <Stack.Screen name="LocationHistory" component={LocationHistoryScreen} options={{ title: 'History' }} />
+      <Stack.Screen
+        name="LocationMain"
+        component={LocationScreen}
+        options={{ title: 'Location' }}
+      />
+      <Stack.Screen
+        name="LocationHistory"
+        component={LocationHistoryScreen}
+        options={{ title: 'Location History' }}
+      />
     </Stack.Navigator>
   );
 }
@@ -23,8 +49,16 @@ function LocationStack() {
 function HomeStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="HomeMain" component={HomeScreen} options={{ title: 'Home' }} />
-      <Stack.Screen name="CreateLog" component={CreateLogScreen} options={{ title: 'Create Log' }} />
+      <Stack.Screen
+        name="HomeMain"
+        component={HomeScreen}
+        options={{ title: 'Home' }}
+      />
+      <Stack.Screen
+        name="CreateLog"
+        component={CreateLogScreen}
+        options={{ title: 'Create Log' }}
+      />
     </Stack.Navigator>
   );
 }
@@ -34,7 +68,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="User" component={UserScreen} />
+        <Tab.Screen name="User" component={UserStack} />
         <Tab.Screen name="Location" component={LocationStack} />
       </Tab.Navigator>
     </NavigationContainer>

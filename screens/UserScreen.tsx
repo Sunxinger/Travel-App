@@ -8,48 +8,27 @@ const UserScreen = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const navigation = useNavigation();
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setUserAvatar(result.uri);
-    }
-  };
-
-  const takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setUserAvatar(result.uri);
-    }
+  const handleEditPress = () => {
+    navigation.navigate('EditProfile', { userName, userAvatar, setUserName, setUserAvatar });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.profileSection}>
-        <TouchableOpacity onPress={pickImage}>
-          {userAvatar ? (
-            <Image source={{ uri: userAvatar }} style={styles.avatar} />
-          ) : (
-            <View style={styles.avatarPlaceholder}>
-              <Text style={styles.avatarText}>+</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+        {userAvatar ? (
+          <Image source={{ uri: userAvatar }} style={styles.avatar} />
+        ) : (
+          <View style={styles.avatarPlaceholder}>
+            <Text style={styles.avatarText}>+</Text>
+          </View>
+        )}
         <Text style={styles.userName}>{userName}</Text>
-        <Button title="Edit Name" onPress={() => Alert.prompt('Edit Name', 'Enter your name:', setUserName)} />
-        <Button title="Take Photo" onPress={takePhoto} />
+        <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
+          <Text style={styles.editButtonText}>EDIT</Text>
+        </TouchableOpacity>
       </View>
 
+      {/* 下面的代码保持不变，确保现有的功能可用 */}
       <View style={styles.tilesContainer}>
         <TouchableOpacity style={styles.tile} onPress={() => navigation.navigate('Translation')}>
           <Text style={styles.tileText}>Translation</Text>
