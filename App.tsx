@@ -8,6 +8,7 @@ import TranslateScreen from './screens/TranslateScreen'; // 确保已经创建�
 import LocationScreen from './screens/LocationScreen';
 import LocationHistoryScreen from './screens/LocationHistoryScreen';
 import CreateLogScreen from './screens/CreateLogScreen';
+import CurrencyRatesScreen from './screens/CurrencyRatesScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,6 +25,11 @@ function UserStack() {
         name="TranslateScreen"
         component={TranslateScreen}
         options={{ title: 'Translate' }} // 添加TranslateScreen到UserStack中
+      />
+      <Stack.Screen
+        name="CurrencyRatesScreen"
+        component={CurrencyRatesScreen}
+        options={{ title: 'Currency Rates' }} 
       />
       {/* 如果UserStack中有其他屏幕，继续添加它们 */}
     </Stack.Navigator>
