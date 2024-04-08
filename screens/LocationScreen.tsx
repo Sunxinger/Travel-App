@@ -4,10 +4,12 @@ import MapView, { Marker } from 'react-native-maps';
 import { getData, storeData } from '../services/LocalStorageService';
 import * as Location from 'expo-location';
 import DataService from '../services/DataService';
+import { useNavigation } from '@react-navigation/native'; // 引入useNavigation
 
 const LocationScreen = () => {
   const [location, setLocation] = useState(null);
   const mapRef = useRef(null);
+  const navigation = useNavigation(); // 使用useNavigation hook
 
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -82,6 +84,8 @@ const LocationScreen = () => {
       </Text>
       <Button title="Get Location" onPress={getLocation} />
       <Button title="Send Location" onPress={handleSendLocation} />
+      {/* 新增按钮用于跳转到LocationHistoryScreen */}
+      <Button title="View Location History" onPress={() => navigation.navigate('LocationHistory')} />
     </View>
   );
 };
