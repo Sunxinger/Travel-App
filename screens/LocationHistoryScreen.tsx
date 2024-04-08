@@ -1,21 +1,25 @@
 // LocationHistoryScreen.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { getData } from '../services/LocalStorageService'; // 确保路径正确
+import { useFocusEffect } from '@react-navigation/native';
 
 const LocationHistoryScreen = () => {
   const [locationRecords, setLocationRecords] = useState([]);
 
-  useEffect(() => {
-    const fetchLocationRecords = async () => {
-      const records = await getData('locations');
-      if (records) {
-        setLocationRecords(records);
-      }
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchLocationRecords = async () => {
+        const records = await getData('locations');
+        if (records) {
+          setLocationRecords(records);
+        }
+      };
 
-    fetchLocationRecords();
-  }, []);
+      fetchLocationRecords();
+      return () => {}; // 返回一个空函数作为清理操作
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.container}>
