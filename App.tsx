@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import UserScreen from './screens/UserScreen';
-import EditProfileScreen from './screens/EditProfileScreen';
 import LocationScreen from './screens/LocationScreen';
 import LocationHistoryScreen from './screens/LocationHistoryScreen';
 import CreateLogScreen from './screens/CreateLogScreen';
@@ -19,11 +18,6 @@ function UserStack() {
         name="UserMain"
         component={UserScreen}
         options={{ title: 'User' }}
-      />
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfileScreen}
-        options={{ title: 'Edit Profile' }}
       />
     </Stack.Navigator>
   );

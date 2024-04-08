@@ -1,37 +1,25 @@
-// AppNavigator.tsx
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+// 导入React Navigation库中的组件
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// 导入屏幕组件
 import HomeScreen from '../screens/HomeScreen';
 import UserScreen from '../screens/UserScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
-import LocationScreen from '../screens/LocationScreen';
-import LocationHistoryScreen from '../screens/LocationHistoryScreen';
-import CreateLogScreen from '../screens/CreateLogScreen';
+import LocationScreen from '../screens/LocationScreen'; // 根据你的文件结构更新路径
 
+
+// 使用createBottomTabNavigator创建一个Tab导航器
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
-function UserStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="UserMain" component={UserScreen} options={{ title: 'User' }} />
-      <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ title: 'Edit Profile' }} />
-    </Stack.Navigator>
-  );
-}
-
-// ... 保持LocationStack和HomeStack的代码不变
-
+// 创建并导出AppNavigator组件
 const AppNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false }} // 可选配置，用于隐藏每个屏幕顶部的导航栏
     >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="User" component={UserStack} />
-      <Tab.Screen name="Location" component={LocationStack} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="User" component={UserScreen} />
+      <Tab.Screen name="Location" component={LocationScreen} />
     </Tab.Navigator>
   );
 };
