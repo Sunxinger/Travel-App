@@ -10,6 +10,7 @@ const CreateLogScreen = () => {
   const [imageUri, setImageUri] = useState(null);
   const [location, setLocation] = useState(null);
   const [timestamp, setTimestamp] = useState('');
+  const [key, setKey] = useState(0); // Added for forcing refresh
 
   useEffect(() => {
     (async () => {
@@ -40,6 +41,7 @@ const CreateLogScreen = () => {
 
     if (!result.cancelled) {
       setImageUri(result.uri);
+      setKey(prevKey => prevKey + 1); // Update key to force re-render
     }
   };
 
@@ -77,7 +79,9 @@ const CreateLogScreen = () => {
         multiline
       />
       <Button title="Pick an Image" onPress={pickImage} />
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.thumbnail} />}
+      {imageUri && (
+        <Image key={key} source={{ uri: imageUri }} style={styles.thumbnail} />
+      )}
       {location && (
         <Text style={styles.location}>Location: Lat {location.latitude}, Lon {location.longitude}</Text>
       )}
