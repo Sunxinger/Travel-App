@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { storeData, getData } from '../services/LocalStorageService';
+import { getData, storeData } from '../services/LocalStorageService';
 import * as Location from 'expo-location';
 import DataService from '../services/DataService';
 
@@ -19,21 +19,32 @@ const LocationScreen = () => {
     let currentLocation = await Location.getCurrentPositionAsync({});
     setLocation(currentLocation.coords);
 
-    // 当位置更新时，使用animateToRegion让地图视图居中到新位置
+    // 更新地图视图中心
     mapRef.current?.animateToRegion({
       latitude: currentLocation.coords.latitude,
       longitude: currentLocation.coords.longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
-    }, 1000); // 1000是动画持续时间（毫秒）
+    }, 1000);
 
-    await storeData('lastLocation', currentLocation.coords);
+    // 保存新的位置数据到本地
+    saveLocationData(currentLocation.coords);
   };
 
   const handleSendLocation = async () => {
     if (location) {
       await DataService.sendLocationViaHttp(location);
     }
+  };
+
+  // 定义saveLocationData函数，用于添加位置数据到本地存储中的数组
+  const saveLocationData = async (newLocationCoords) => {
+    const existingLocations = await getData('locations') || [];
+    const newLocation = {
+      ...newLocationCoords,
+      timestamp: new Date().toISOString(),
+    };
+    await storeData('locations', [...existingLocations, newLocation]);
   };
 
   useEffect(() => {
@@ -53,7 +64,7 @@ const LocationScreen = () => {
         ref={mapRef}
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825, // 默认值，第一次渲染地图时使用
+          latitude: 37.78825, // 默认值
           longitude: -122.4324, // 默认值
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,

@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LocationScreen from './screens/LocationScreen';
+import LocationHistoryScreen from './screens/LocationHistoryScreen'; // 新增行：引入LocationHistoryScreen
 
 // 创建底部标签导航器实例
 const Tab = createBottomTabNavigator();
@@ -20,8 +21,8 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
         <Tab.Screen name="Location" component={LocationScreen} />
+        <Tab.Screen name="History" component={LocationHistoryScreen} /> {/* 新增行：添加LocationHistoryScreen到底部标签导航 */}
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
-
