@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Button, StyleSheet, Dimensions, Switch, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, Dimensions, Switch, Alert, Linking} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { getData, storeData } from '../services/LocalStorageService';
 import * as Location from 'expo-location';
@@ -43,7 +43,7 @@ const LocationScreen = () => {
     let intervalId;
     if (isLocationServiceEnabled) {
       getLocationPeriodically();
-      intervalId = setInterval(getLocationPeriodically, 1800000); // 30 minutes
+      intervalId = setInterval(getLocationPeriodically, 3000); // 30 minutes
     } else {
       clearInterval(intervalId);
     }
@@ -56,6 +56,15 @@ const LocationScreen = () => {
     // Your location fetching logic here
     handleSendLocation(); // Call your send location function
   };
+
+  const sendSMS = () => {
+    const phoneNumber = '+447782621856'; // 要发送的电话号码
+    const message = `Latitude: ${location.latitude}, Longitude: ${location.longitude}`; // 要发送的消息内容
+  
+    // 使用 Linking API 打开设备上的 SMS 应用，并填充电话号码和消息内容
+    Linking.openURL(`sms:${phoneNumber}?body=${message}`);
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -79,6 +88,7 @@ const LocationScreen = () => {
       <Text style={styles.text}>
         {location ? `Latitude: ${location.latitude}, Longitude: ${location.longitude}` : 'No location data.'}
       </Text>
+      <Button title="Send SMS" onPress={sendSMS} />
       <Button title="Get Location" onPress={getLocationOnce} />
       <Button title="Send Location" onPress={handleSendLocation} />
       <Button title="View Location History" onPress={() => navigation.navigate('LocationHistory')} />
