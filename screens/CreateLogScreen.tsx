@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const CreateLogScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageUri, setImageUri] = useState(null);
-  const [location, setLocation] = useState(null);
+  // Assume a default location for simplicity
+  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [timestamp, setTimestamp] = useState('');
-  const [key, setKey] = useState(0); // Added for forcing refresh
+  const logIndex = route.params?.index ?? null;
 
   useEffect(() => {
-    (async () => {
-      const imagePickerStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (imagePickerStatus.status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-
-      const locationStatus = await Location.requestForegroundPermissionsAsync();
-      if (locationStatus.status !== 'granted') {
-        alert('Permission to access location was denied');
-        return;
-      }
-
-      const currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation.coords);
-      setTimestamp(new Date().toLocaleString());
-    })();
+    if (route.params?.log) {
+      setTitle(route.params.log.title);
+      setContent(route.params.log.content);
+      setImageUri(route.params.log.imageUri);
+      setLocation(route.params.log.location);
+      setTimestamp(route.params.log.timestamp);
+    }
   }, []);
 
   const pickImage = async () => {
@@ -41,88 +35,68 @@ const CreateLogScreen = () => {
 
     if (!result.cancelled) {
       setImageUri(result.uri);
-      setKey(prevKey => prevKey + 1); // Update key to force re-render
     }
   };
 
   const saveLog = async () => {
-    const newLog = {
-      title,
-      content,
-      imageUri,
-      location,
-      timestamp,
-    };
+    let logs = await AsyncStorage.getItem('logs');
+    logs = logs ? JSON.parse(logs) : [];
+    const newLog = { title, content, imageUri, location, timestamp };
 
-    const existingLogs = JSON.parse(await AsyncStorage.getItem('logs')) || [];
-    await AsyncStorage.setItem('logs', JSON.stringify([...existingLogs, newLog]));
+    if (logIndex !== null) {
+      logs[logIndex] = newLog;
+    } else {
+      logs.push(newLog);
+    }
 
-    Alert.alert('Log Saved', 'Your log has been saved successfully.');
-    // Optionally reset form here
+    await AsyncStorage.setItem('logs', JSON.stringify(logs));
+    Alert.alert('Log Saved', 'Your log has been successfully saved.');
+    navigation.goBack();
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.label}>Title:</Text>
+    <ScrollView style={styles.container}>
       <TextInput
-        placeholder="Enter title here"
+        style={styles.input}
+        placeholder="Title"
         value={title}
         onChangeText={setTitle}
-        style={styles.input}
       />
-      <Text style={styles.label}>Content:</Text>
       <TextInput
-        placeholder="Enter content here"
+        style={[styles.input, styles.textArea]}
+        placeholder="Content"
         value={content}
         onChangeText={setContent}
-        style={[styles.input, styles.textArea]}
         multiline
       />
-      <Button title="Pick an Image" onPress={pickImage} />
-      {imageUri && (
-        <Image key={key} source={{ uri: imageUri }} style={styles.thumbnail} />
-      )}
-      {location && (
-        <Text style={styles.location}>Location: Lat {location.latitude}, Lon {location.longitude}</Text>
-      )}
-      <Text style={styles.timestamp}>Timestamp: {timestamp}</Text>
-      <Button title="Submit Log" onPress={saveLog} />
+      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+      <Button title="Pick an image" onPress={pickImage} />
+      <Button title="Save Log" onPress={saveLog} />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     padding: 20,
   },
-  label: {
-    marginVertical: 8,
-    fontWeight: 'bold',
-  },
   input: {
-    width: '100%',
-    padding: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'gray',
+    padding: 10,
+    marginBottom: 20,
     borderRadius: 5,
-    marginBottom: 15,
   },
   textArea: {
     height: 100,
     textAlignVertical: 'top',
   },
-  thumbnail: {
+  image: {
     width: 100,
     height: 100,
-    marginTop: 10,
-    alignSelf: 'center',
-  },
-  location: {
-    marginTop: 10,
-  },
-  timestamp: {
-    marginTop: 10,
+    resizeMode: 'cover',
+    marginBottom: 20,
   },
 });
 
