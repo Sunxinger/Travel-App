@@ -1,13 +1,13 @@
-// SettingsScreen.tsx 示例
+// UserScreen.tsx 示例
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const SettingsScreen = () => {
+const UserScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings Screen</Text>
+      <Text>User Screen</Text>
     </View>
   );
 };
 
-export default SettingsScreen;
+export default UserScreen;

@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, Alert, Share } from 'react-native';
-import LocationService from '../services/LocationService'; // Ensure this path is correct
-import DataService from '../services/DataService'; // Ensure this path is correct
+import LocationService from '../services/LocationService'; // 确保路径正确
+import DataService from '../services/DataService'; // 确保路径正确
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native'; // 引入useNavigation
 
 const HomeScreen = () => {
   const [location, setLocation] = useState(null);
   const [logs, setLogs] = useState([]);
-  const navigation = useNavigation(); // Use the useNavigation hook
+  const navigation = useNavigation(); // 使用useNavigation hook
 
   useEffect(() => {
-    (async () => {
+    const fetchLocationAndLogs = async () => {
       const currentLocation = await LocationService.getCurrentLocation();
       setLocation(currentLocation);
-      await loadLogs();
-    })();
-  }, []);
+      const storedLogs = await AsyncStorage.getItem('logs');
+      if (storedLogs) setLogs(JSON.parse(storedLogs));
+    };
 
-  const loadLogs = async () => {
-    const storedLogs = await AsyncStorage.getItem('logs');
-    if (storedLogs) {
-      setLogs(JSON.parse(storedLogs));
-    }
-  };
+    const unsubscribe = navigation.addListener('focus', fetchLocationAndLogs);
+
+    return unsubscribe;
+  }, [navigation]);
 
   const handleSendLocation = async () => {
     if (location) {
@@ -70,7 +68,6 @@ const HomeScreen = () => {
         <Text>Fetching location...</Text>
       )}
       <View style={styles.logContainer}>
-        <Text style={styles.logTitle}>Logs:</Text>
         {logs.map((log, index) => (
           <View key={index} style={styles.log}>
             <Text>Title: {log.title}</Text>
@@ -103,7 +100,6 @@ const styles = StyleSheet.create({
   log: {
     marginBottom: 20,
   },
-  // You can add more styles for your logs here
 });
 
 export default HomeScreen;

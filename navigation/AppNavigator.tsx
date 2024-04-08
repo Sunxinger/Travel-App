@@ -3,7 +3,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // 导入屏幕组件
 import HomeScreen from '../screens/HomeScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import UserScreen from '../screens/UserScreen';
 import LocationScreen from '../screens/LocationScreen'; // 根据你的文件结构更新路径
 
 
@@ -18,7 +18,7 @@ const AppNavigator = () => {
       screenOptions={{ headerShown: false }} // 可选配置，用于隐藏每个屏幕顶部的导航栏
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Settings" component={UserScreen} />
       <Tab.Screen name="Location" component={LocationScreen} />
     </Tab.Navigator>
   );

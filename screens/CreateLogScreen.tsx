@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Alert } f
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Location from 'expo-location';
 
 const CreateLogScreen = () => {
   const navigation = useNavigation();
@@ -10,19 +11,33 @@ const CreateLogScreen = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageUri, setImageUri] = useState(null);
-  // Assume a default location for simplicity
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [timestamp, setTimestamp] = useState('');
   const logIndex = route.params?.index ?? null;
 
   useEffect(() => {
-    if (route.params?.log) {
-      setTitle(route.params.log.title);
-      setContent(route.params.log.content);
-      setImageUri(route.params.log.imageUri);
-      setLocation(route.params.log.location);
-      setTimestamp(route.params.log.timestamp);
-    }
+    (async () => {
+      let currentLocation;
+      if (!route.params?.log) {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Permission Denied', 'Permission to access location was denied');
+          return;
+        }
+        currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation({
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+        });
+        setTimestamp(new Date().toISOString());
+      } else {
+        setTitle(route.params.log.title);
+        setContent(route.params.log.content);
+        setImageUri(route.params.log.imageUri);
+        setLocation(route.params.log.location);
+        setTimestamp(route.params.log.timestamp);
+      }
+    })();
   }, []);
 
   const pickImage = async () => {
