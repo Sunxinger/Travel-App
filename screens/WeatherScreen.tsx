@@ -1,33 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
+import * as Location from 'expo-location';
 
 const WeatherScreen = () => {
   const [city, setCity] = useState('');
   const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getCurrentWeather();
   }, []);
 
-  const getCurrentWeather = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        fetchWeather(latitude, longitude);
-      },
-      error => {
-        console.error(error);
-        setLoading(false);
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
+  const getCurrentWeather = async () => {
+    setLoading(true);
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.error('Permission to access location was denied');
+      setLoading(false);
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    fetchWeather(location.coords.latitude, location.coords.longitude);
   };
 
   const fetchWeather = async (lat, lon, city = '') => {
-    setLoading(true);
-    const apiKey = '3bfc67e47b778889c33dd2d8b63a94f7';
+    const apiKey = 'b4a53f000fcedf0a00c024c17f48a7db';
     let url = `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&units=metric`;
 
     if (city !== '') {
@@ -58,7 +56,7 @@ const WeatherScreen = () => {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return <ActivityIndicator size="large" style={styles.loader} />;
   }
 
   return (
@@ -71,11 +69,11 @@ const WeatherScreen = () => {
       />
       <Button title="Search" onPress={handleSearchCity} />
       {weather && (
-        <View>
+        <View style={styles.weatherInfo}>
           <Text style={styles.title}>{weather.name}</Text>
-          <Text>Temperature: {weather.main.temp} °C</Text>
-          <Text>Weather: {weather.weather[0].main}</Text>
-          <Text>Humidity: {weather.main.humidity}%</Text>
+          <Text style={styles.weatherText}>Temperature: {weather.main.temp}°C</Text>
+          <Text style={styles.weatherText}>Weather: {weather.weather[0].description}</Text>
+          <Text style={styles.weatherText}>Humidity: {weather.main.humidity}%</Text>
         </View>
       )}
     </View>
@@ -85,21 +83,28 @@ const WeatherScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
   },
   input: {
-    width: '100%',
-    borderColor: 'gray',
+    borderColor: '#ccc',
     borderWidth: 1,
     marginBottom: 20,
-    padding: 10,
+    paddingHorizontal: 10,
+    height: 40,
+  },
+  loader: {
+    marginTop: 20,
+  },
+  weatherInfo: {
+    marginTop: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+  },
+  weatherText: {
+    fontSize: 18,
+    marginTop: 10,
   },
 });
 
