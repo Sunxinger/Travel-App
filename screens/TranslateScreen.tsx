@@ -10,9 +10,9 @@ const TranslateScreen = () => {
   const translateText = async () => {
     if (!inputText) return;
 
-    // 注意：替换'YOUR_API_KEY'为你的Google Translate API密钥
+    
     try {
-      const response = await fetch(`https://translation.googleapis.com/language/translate/v2?target=${language}&q=${encodeURIComponent(inputText)}&key=YOUR_API_KEY`, {
+      const response = await fetch(`https://translation.googleapis.com/language/translate/v2?target=${language}&q=${encodeURIComponent(inputText)}&key=AIzaSyB-ROOjVyQT4-RFawmTytDlVmkmma55rTI`, {
         method: 'POST',
       });
       const responseJson = await response.json();

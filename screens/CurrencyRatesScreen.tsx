@@ -5,7 +5,7 @@ const CurrencyRatesScreen = () => {
   const [rates, setRates] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 国旗emoji和货币代码的映射
+
   const flags = {
     USD: '🇺🇸',
     EUR: '🇪🇺',

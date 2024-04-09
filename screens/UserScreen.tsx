@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, Linking, Image, Alert } from 'react-native';
 
 const UserScreen = ({ navigation }) => {
-  // 紧急电话号码
+
   const emergencyNumber = '999'; 
   
   const handlePressEmergency = () => {
-    // 询问用户是否确定
+ 
     Alert.alert(
       'Emergency Call',
       'An emergency call will be made, continue?',
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    marginBottom: 10, // 为容器添加底部外边距以增加按钮之间的空隙
+    marginBottom: 10, 
   },
-  // 其他样式...
+ 
 });
 
 export default UserScreen;

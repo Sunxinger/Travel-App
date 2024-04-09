@@ -25,7 +25,7 @@ const WeatherScreen = () => {
   };
 
   const fetchWeather = async (lat, lon, city = '') => {
-    const apiKey = 'ff5b3dfdeb594b2ba5d02907240904'; // 替换为你的WeatherAPI密钥
+    const apiKey = 'ff5b3dfdeb594b2ba5d02907240904'; 
     let url = city
       ? `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`
       : `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`;

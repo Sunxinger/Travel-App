@@ -24,7 +24,7 @@ class LocationService {
         return;
       }
 
-      // 获取网络状态
+     
       const state = await NetInfo.fetch();
 
       if (state.isConnected) {
@@ -35,7 +35,7 @@ class LocationService {
         });
       } else {
         // 设备离线，通过SMS发送位置
-        // 替换为你的电话号码和需要的消息格式
+       
         const phoneNumber = '07398413006';
         const message = `Location: Latitude ${location.coords.latitude}, Longitude ${location.coords.longitude}`;
         DataService.sendLocationViaSms([phoneNumber], message);

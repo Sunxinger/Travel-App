@@ -1,4 +1,4 @@
-// LocationHistoryScreen.tsx
+
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { getData, clearData } from '../services/LocalStorageService'; // 确保路径正确
@@ -17,14 +17,14 @@ const LocationHistoryScreen = () => {
       };
 
       fetchLocationRecords();
-      return () => {}; // 返回一个空函数作为清理操作
+      return () => {}; 
     }, [])
   );
 
   // 删除所有位置记录
   const handleDelete = async () => {
     await clearData('locations');
-    setLocationRecords([]); // 更新状态，清除位置记录
+    setLocationRecords([]); 
   };
 
   return (

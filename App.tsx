@@ -21,12 +21,12 @@ function UserStack() {
       <Stack.Screen
         name="UserMain"
         component={UserScreen}
-        options={{ title: '' }} // 你可以自定义标题
+        options={{ title: '' }} 
       />
       <Stack.Screen
         name="TranslateScreen"
         component={TranslateScreen}
-        options={{ title: 'Translate' }} // 添加TranslateScreen到UserStack中
+        options={{ title: 'Translate' }} 
       />
       <Stack.Screen
         name="CurrencyRatesScreen"
@@ -38,7 +38,7 @@ function UserStack() {
         component={WeatherScreen}
         options={{ title: 'Weather' }} 
       />
-      {/* 如果UserStack中有其他屏幕，继续添加它们 */}
+   
     </Stack.Navigator>
   );
 }
@@ -56,7 +56,7 @@ function LocationStack() {
         component={LocationHistoryScreen}
         options={{ title: 'Location History' }}
       />
-      {/* 添加LocationStack中的其他屏幕 */}
+ 
     </Stack.Navigator>
   );
 }
@@ -74,7 +74,7 @@ function HomeStack() {
         component={CreateLogScreen}
         options={{ title: 'Create Log' }}
       />
-      {/* 添加HomeStack中的其他屏幕 */}
+      
     </Stack.Navigator>
   );
 }
@@ -94,8 +94,7 @@ export default function App() {
             } else if (route.name === 'Location') {
               iconName = focused ? 'map-marker' : 'map-marker-outline';
             }
-            // 其他标签的图标逻辑可以在这里添加
-
+           
             return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
           },
         })}
@@ -107,7 +106,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="User" component={UserStack} />
         <Tab.Screen name="Location" component={LocationStack} />
-        {/* 如果有其他Tab，继续添加它们 */}
+        
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, Alert, Share } from 'react-native';
-import LocationService from '../services/LocationService'; // 确保路径正确
-import DataService from '../services/DataService'; // 确保路径正确
+import LocationService from '../services/LocationService'; 
+import DataService from '../services/DataService'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // 引入useNavigation
+import { useNavigation } from '@react-navigation/native'; 
 
 const HomeScreen = () => {
   const [location, setLocation] = useState(null);
