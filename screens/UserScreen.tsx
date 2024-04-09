@@ -7,12 +7,16 @@ const UserScreen = ({ navigation }) => {
       <Text style={styles.title}>用户资料</Text>
       {/* 在此处添加其他与用户资料相关的组件 */}
       <Button
-        title="Translate"
+        title="Translates"
         onPress={() => navigation.navigate('TranslateScreen')} // 确保在你的导航堆栈中注册了'TranslateScreen'
       />
       <Button
         title="Currency"
         onPress={() => navigation.navigate('CurrencyRatesScreen')} // 确保在你的导航堆栈中注册了'TranslateScreen'
+      />
+      <Button
+        title="Weather"
+        onPress={() => navigation.navigate('WeatherScreen')} // 确保在你的导航堆栈中注册了'TranslateScreen'
       />
       {/* 根据需要添加其他按钮和功能 */}
     </View>

@@ -9,6 +9,7 @@ import LocationScreen from './screens/LocationScreen';
 import LocationHistoryScreen from './screens/LocationHistoryScreen';
 import CreateLogScreen from './screens/CreateLogScreen';
 import CurrencyRatesScreen from './screens/CurrencyRatesScreen';
+import WeatherScreen from './screens/WeatherScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +31,11 @@ function UserStack() {
         name="CurrencyRatesScreen"
         component={CurrencyRatesScreen}
         options={{ title: 'Currency Rates' }} 
+      />
+      <Stack.Screen
+        name="WeatherScreen"
+        component={WeatherScreen}
+        options={{ title: 'Weather' }} 
       />
       {/* 如果UserStack中有其他屏幕，继续添加它们 */}
     </Stack.Navigator>
