@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'; // 引入useNavigation
 const HomeScreen = () => {
   const [location, setLocation] = useState(null);
   const [logs, setLogs] = useState([]);
-  const navigation = useNavigation(); // 使用useNavigation hook
+  const navigation = useNavigation(); 
 
   useEffect(() => {
     const fetchLocationAndLogs = async () => {

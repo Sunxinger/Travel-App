@@ -1,9 +1,9 @@
 import * as Location from 'expo-location';
 import NetInfo from '@react-native-community/netinfo';
-import DataService from './DataService'; // 确保路径正确
+import DataService from './DataService'; 
 
 class LocationService {
-  // 请求位置权限并获取当前位置
+  // 获取当前位置
   async getCurrentLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -15,7 +15,7 @@ class LocationService {
     return location;
   }
 
-  // 根据网络状态选择发送方式
+
   async sendLocation() {
     try {
       const location = await this.getCurrentLocation();
