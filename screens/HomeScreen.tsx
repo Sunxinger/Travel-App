@@ -73,7 +73,7 @@ const HomeScreen = () => {
             <Text>Title: {log.title}</Text>
             <Text>Content: {log.content}</Text>
             <Text>Timestamp: {log.timestamp}</Text>
-            <Text>Location: Lat {log.location.latitude}, Lon {log.location.longitude}</Text>
+            <Text>Location: Lat {log.location?.latitude}, Lon {log.location?.longitude}</Text>
             <Button title="Delete" onPress={() => handleDeleteLog(index)} />
             <Button title="Edit" onPress={() => handleEditLog(index)} />
             <Button title="Share" onPress={() => handleShareLog(log)} />

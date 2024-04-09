@@ -25,22 +25,18 @@ const WeatherScreen = () => {
   };
 
   const fetchWeather = async (lat, lon, city = '') => {
-    const apiKey = 'b4a53f000fcedf0a00c024c17f48a7db';
-    let url = `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&units=metric`;
-
-    if (city !== '') {
-      url += `&q=${city}`;
-    } else {
-      url += `&lat=${lat}&lon=${lon}`;
-    }
+    const apiKey = 'ff5b3dfdeb594b2ba5d02907240904'; // 替换为你的WeatherAPI密钥
+    let url = city
+      ? `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`
+      : `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}`;
 
     try {
       const response = await fetch(url);
       const data = await response.json();
-      if (data.cod === 200) {
+      if (data) {
         setWeather(data);
       } else {
-        console.error('Failed to fetch weather data:', data.message);
+        console.error('Failed to fetch weather data');
       }
     } catch (error) {
       console.error('Failed to fetch weather data:', error);
@@ -56,7 +52,7 @@ const WeatherScreen = () => {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" style={styles.loader} />;
+    return <ActivityIndicator size="large" />;
   }
 
   return (
@@ -69,11 +65,10 @@ const WeatherScreen = () => {
       />
       <Button title="Search" onPress={handleSearchCity} />
       {weather && (
-        <View style={styles.weatherInfo}>
-          <Text style={styles.title}>{weather.name}</Text>
-          <Text style={styles.weatherText}>Temperature: {weather.main.temp}°C</Text>
-          <Text style={styles.weatherText}>Weather: {weather.weather[0].description}</Text>
-          <Text style={styles.weatherText}>Humidity: {weather.main.humidity}%</Text>
+        <View>
+          <Text style={styles.title}>{weather.location.name}</Text>
+          <Text>Temperature: {weather.current.temp_c}°C</Text>
+          <Text>Weather: {weather.current.condition.text}</Text>
         </View>
       )}
     </View>

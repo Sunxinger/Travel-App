@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Button, StyleSheet, Dimensions, Switch, Alert, Linking} from 'react-native';
+import { View, Text, Button, StyleSheet, Dimensions, Switch, Alert, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { getData, storeData } from '../services/LocalStorageService';
 import * as Location from 'expo-location';
@@ -31,6 +31,9 @@ const LocationScreen = () => {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     }, 1000);
+
+    // Save the new location data locally
+    saveLocationData(currentLocation.coords);
   };
 
   const handleSendLocation = async () => {
@@ -39,11 +42,21 @@ const LocationScreen = () => {
     }
   };
 
+  // Save location data logic
+  const saveLocationData = async (newLocationCoords) => {
+    const existingLocations = await getData('locations') || [];
+    const newLocation = {
+      ...newLocationCoords,
+      timestamp: new Date().toISOString(),
+    };
+    await storeData('locations', [...existingLocations, newLocation]);
+  };
+
   useEffect(() => {
     let intervalId;
     if (isLocationServiceEnabled) {
       getLocationPeriodically();
-      intervalId = setInterval(getLocationPeriodically, 3000); // 30 minutes
+      intervalId = setInterval(getLocationPeriodically, 30000); // Adjusted to 30,000 for 30 seconds
     } else {
       clearInterval(intervalId);
     }
@@ -53,18 +66,22 @@ const LocationScreen = () => {
 
   const getLocationPeriodically = async () => {
     console.log('Attempting to fetch location...');
-    // Your location fetching logic here
-    handleSendLocation(); // Call your send location function
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    setLocation(currentLocation.coords);
+
+    // Save the new location data locally
+    saveLocationData(currentLocation.coords);
+
+    handleSendLocation(); // Call your send location function if necessary
   };
 
   const sendSMS = () => {
-    const phoneNumber = '+447782621856'; // 要发送的电话号码
-    const message = `Latitude: ${location.latitude}, Longitude: ${location.longitude}`; // 要发送的消息内容
-  
-    // 使用 Linking API 打开设备上的 SMS 应用，并填充电话号码和消息内容
+    const phoneNumber = '+447782621856'; // Example phone number
+    const message = `Latitude: ${location.latitude}, Longitude: ${location.longitude}`; // Message content
+
+    // Using Linking API to open the SMS app on the device with the phone number and message content
     Linking.openURL(`sms:${phoneNumber}?body=${message}`);
   };
-  
 
   return (
     <View style={styles.container}>
