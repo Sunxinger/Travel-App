@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Linking, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, Linking, Image, Alert } from 'react-native';
 
 const UserScreen = ({ navigation }) => {
   // 紧急电话号码
@@ -26,25 +26,39 @@ const UserScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>WELCOME</Text>
-  
-      <Button
-        title="Translate"
-        onPress={() => navigation.navigate('TranslateScreen')}
+      <Text style={styles.title}>Welcome to</Text>
+      <Image
+        source={require('../assets/image.png')}
+        style={styles.image}
       />
-      <Button
-        title="Currency"
-        onPress={() => navigation.navigate('CurrencyRatesScreen')}
-      />
-      <Button
-        title="Weather"
-        onPress={() => navigation.navigate('WeatherScreen')}
-      />
-      <Button
-        title="Emergency Call"
-        onPress={handlePressEmergency}
-        color="red"
-      />
+      <View style={styles.container}>
+  <View style={styles.buttonContainer}>
+    <Button
+      title="Translate"
+      onPress={() => navigation.navigate('TranslateScreen')}
+    />
+  </View>
+  <View style={styles.buttonContainer}>
+    <Button
+      title="Currency"
+      onPress={() => navigation.navigate('CurrencyRatesScreen')}
+    />
+  </View>
+  <View style={styles.buttonContainer}>
+    <Button
+      title="Weather"
+      onPress={() => navigation.navigate('WeatherScreen')}
+    />
+  </View>
+  <View style={styles.buttonContainer}>
+    <Button
+      title="Emergency Call"
+      onPress={handlePressEmergency}
+      color="red"
+    />
+  </View>
+</View>
+
       
     </View>
   );
@@ -61,10 +75,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
-  emergencyButton: {
-    backgroundColor: 'red', 
+  buttonContainer: {
+    marginBottom: 10, // 为容器添加底部外边距以增加按钮之间的空隙
   },
-  // 根据需要添加更多样式
+  // 其他样式...
 });
 
 export default UserScreen;

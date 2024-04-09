@@ -4,12 +4,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import UserScreen from './screens/UserScreen';
-import TranslateScreen from './screens/TranslateScreen'; // 确保已经创建了这个文件
+import TranslateScreen from './screens/TranslateScreen'; 
 import LocationScreen from './screens/LocationScreen';
 import LocationHistoryScreen from './screens/LocationHistoryScreen';
 import CreateLogScreen from './screens/CreateLogScreen';
 import CurrencyRatesScreen from './screens/CurrencyRatesScreen';
 import WeatherScreen from './screens/WeatherScreen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -20,7 +21,7 @@ function UserStack() {
       <Stack.Screen
         name="UserMain"
         component={UserScreen}
-        options={{ title: 'User Profile' }} // 你可以自定义标题
+        options={{ title: '' }} // 你可以自定义标题
       />
       <Stack.Screen
         name="TranslateScreen"
@@ -81,11 +82,32 @@ function HomeStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'User') {
+              iconName = focused ? 'account' : 'account-outline';
+            } else if (route.name === 'Location') {
+              iconName = focused ? 'map-marker' : 'map-marker-outline';
+            }
+            // 其他标签的图标逻辑可以在这里添加
+
+            return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'blue',
+          inactiveTintColor: 'gray',
+        }}
+      >
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="User" component={UserStack} />
         <Tab.Screen name="Location" component={LocationStack} />
-        {/* 如果有其他的Tab，继续添加它们 */}
+        {/* 如果有其他Tab，继续添加它们 */}
       </Tab.Navigator>
     </NavigationContainer>
   );
