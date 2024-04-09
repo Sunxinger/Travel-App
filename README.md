@@ -13,7 +13,8 @@ The Traveller App is the ultimate companion for modern adventurers. Developed in
 - **Weather Updates:** Get real-time weather information for your current location or planned destinations. ☀️🌧️
 - **Translation Services:** Break down language barriers with instant translations. 🈯️
 - **Location History:** Track the places you've visited during your travels. 🌏
-- **User Profile:** Customize your app experience through your personal user profile. 👤
+- **Emergency Call:** Quickly make emergency calls via the app. ☎️
+
 
 ## Installation 🔧
 
@@ -49,3 +50,11 @@ Contributions to the Traveller App are welcome! If you have suggestions or impro
 ## License 📄
 
 Traveller App is an open-source project available under the [MIT License](LICENSE).
+
+## Contact Information 📬
+
+For any inquiries or contributions, feel free to reach out through GitHub or directly via email.
+
+- **GitHub:** https://github.com/Sunxinger
+- **Email:** yusunxing@outlook.com
+
