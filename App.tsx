@@ -94,14 +94,18 @@ export default function App() {
             } else if (route.name === 'Location') {
               iconName = focused ? 'map-marker' : 'map-marker-outline';
             }
-           
+
             return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
           },
+          tabBarActiveTintColor: 'blue', 
+          tabBarInactiveTintColor: 'gray', 
+          tabBarStyle: [ 
+            {
+              "display": "flex"
+            },
+            null
+          ]
         })}
-        tabBarOptions={{
-          activeTintColor: 'blue',
-          inactiveTintColor: 'gray',
-        }}
       >
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="User" component={UserStack} />
