@@ -61,7 +61,6 @@ const HomeScreen = () => {
         <>
           <Text>Latitude: {location.coords.latitude}</Text>
           <Text>Longitude: {location.coords.longitude}</Text>
-          <Button title="Send Location" onPress={handleSendLocation} />
           <Button title="Create Log" onPress={() => navigation.navigate('CreateLog')} />
         </>
       ) : (

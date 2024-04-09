@@ -1,24 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Linking, Alert } from 'react-native';
 
 const UserScreen = ({ navigation }) => {
+  // 紧急电话号码
+  const emergencyNumber = '999'; 
+  
+  const handlePressEmergency = () => {
+    // 询问用户是否确定
+    Alert.alert(
+      'Emergency Call',
+      'An emergency call will be made, continue?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Call',
+          onPress: () => Linking.openURL(`tel:${emergencyNumber}`),
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>用户资料</Text>
-      {/* 在此处添加其他与用户资料相关的组件 */}
+      <Text style={styles.title}>WELCOME</Text>
+  
       <Button
-        title="Translates"
-        onPress={() => navigation.navigate('TranslateScreen')} // 确保在你的导航堆栈中注册了'TranslateScreen'
+        title="Translate"
+        onPress={() => navigation.navigate('TranslateScreen')}
       />
       <Button
         title="Currency"
-        onPress={() => navigation.navigate('CurrencyRatesScreen')} // 确保在你的导航堆栈中注册了'TranslateScreen'
+        onPress={() => navigation.navigate('CurrencyRatesScreen')}
       />
       <Button
         title="Weather"
-        onPress={() => navigation.navigate('WeatherScreen')} // 确保在你的导航堆栈中注册了'TranslateScreen'
+        onPress={() => navigation.navigate('WeatherScreen')}
       />
-      {/* 根据需要添加其他按钮和功能 */}
+      <Button
+        title="Emergency Call"
+        onPress={handlePressEmergency}
+        color="red"
+      />
+      
     </View>
   );
 };
@@ -33,6 +60,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  emergencyButton: {
+    backgroundColor: 'red', 
   },
   // 根据需要添加更多样式
 });

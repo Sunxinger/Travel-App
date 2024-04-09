@@ -21,3 +21,12 @@ export const getData = async (key: string): Promise<any | null> => {
     return null;
   }
 };
+
+export const clearData = async (key: string): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    // 如果有错误，可以在这里添加错误处理逻辑
+    console.error("Error clearing data", e);
+  }
+};
